@@ -1188,6 +1188,8 @@ var Parser = Object.extend({
     parseNodes: function () {
         var tok;
         var buf = [];
+        var trimStartRegex = /^\s*/;
+        var trimEndRegex = /\s*$/;
 
         while((tok = this.nextToken())) {
             if(tok.type === lexer.TOKEN_DATA) {
@@ -1200,7 +1202,7 @@ var Parser = Object.extend({
                 // the `dropLeadingWhitespace` variable.
                 if(this.dropLeadingWhitespace) {
                     // TODO: this could be optimized (don't use regex)
-                    data = data.replace(/^\s*/, '');
+                    data = data.replace(trimStartRegex, '');
                     this.dropLeadingWhitespace = false;
                 }
 
@@ -1212,7 +1214,7 @@ var Parser = Object.extend({
                       nextVal.charAt(this.tokens.tags.COMMENT_START.length)
                         === '-'))) {
                     // TODO: this could be optimized (don't use regex)
-                    data = data.replace(/\s*$/, '');
+                    data = data.replace(trimEndRegex, '');
                 }
 
                 buf.push(new nodes.Output(tok.lineno,
